@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css"/>
+        <title>Rick and Morty</title>
+        <script lang="javascript">
+            var pag = 1;
+            var page_name = 1;
+            var name = "";
+
+            function fetchChars(){
+                fetch(`https://rickandmortyapi.com/api/character/?page=${pag}`)
+                .then(data => data.json())
+                .then(chars => {
+                    var container = document.getElementById("results");
+                    container.innerHTML = "";
+                    for(var char of chars.results){
+                        var div = document.createElement("div");
+                        div.className = "char";
+                        var img = document.createElement("img");
+                        img.src = char.image;
+                        var name = document.createElement("p");
+                        name.innerHTML = char.name;
+                        div.appendChild(img);
+                        div.appendChild(name);
+                        container.appendChild(div);                        
+                    }
+                })
+            }
+
+            function findChar(){
+                var name = document.getElementById("name").value;
+                fetch(`https://rickandmortyapi.com/api/character/?name=${name}&page=${page_name}`)
+                .then(data => data.json())
+                .then(chars => {
+                    var container = document.getElementById("results");
+                    container.innerHTML = "";
+                    for(var char of chars.results){
+                        var div = document.createElement("div");
+                        div.className = "char";
+                        var img = document.createElement("img");
+                        img.src = char.image;
+                        var name = document.createElement("p");
+                        name.innerHTML = char.name;
+                        div.appendChild(img);
+                        div.appendChild(name);
+                        container.appendChild(div);
+                        page.innerHTML = page_name;
+                    }
+                })
+            }          
+
+            function nextPage(){
+                name = document.getElementById("name").value;
+                page = document.getElementById("page");
+                if ( name == "") {
+                    pag = parseInt(pag) + 1;
+                    page.innerHTML = parseInt(page.innerHTML) + 1;
+                    fetchChars();
+                } else {
+                    page.innerHTML = parseInt(page.innerHTML) + 1;
+                    page_name = parseInt(page_name) + 1;
+                    findChar();
+                }
+            }
+
+            function prevPage(){
+                if(name == ""){
+                    if (page.innerHTML == 1) return;
+                    page.innerHTML = parseInt(page.innerHTML) - 1;
+                    pag = parseInt(pag) - 1;
+                    fetchChars();
+                } else {
+                    if (page.innerHTML == 1) return;
+                    page.innerHTML = parseInt(page.innerHTML) - 1;
+                    page_name = parseInt(page_name) - 1;
+                    findChar();     
+                }
+            }
+
+        </script>
+    </head>
+        <body class="container" onload="fetchChars()">
+            <div id="pagination">
+                <button onclick="prevPage()">Anterior</button>
+                <p id="page">1</p>
+                <button onclick="nextPage()">Siguiente</button>
+                <input type="text" id="name"/>
+                <button onclick="findChar()">Buscar</button>            
+            </div>
+            <div class="item"  id="results"></div>
+        </body>
+</html>
+
+

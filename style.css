@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    background: #4682b4;
+    flex-direction: column;
+
+  }
+  
+  .item {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    column-gap: 30px;
+    text-align: center;
+    
+  }
